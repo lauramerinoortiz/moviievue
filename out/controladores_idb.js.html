@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: controladores/idb.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: controladores/idb.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>"use strict" //activo modo estricto
+
+
+export class Idb{
+    constructor(callback){
+        this.bd
+        this.conexion=null
+        this.iniciarBase(this.bd)
+        this.lista
+        this.callback=callback
+    }
+
+    /**
+     * Método que inicia la base de datos
+     * @param {*} bd 
+     */
+    iniciarBase(bd){
+		const peticion =window.indexedDB.open("Peliculas")
+		peticion.onsuccess= (evento) =>{			//si va bien crea una bbdd
+			this.bd=evento.target.result;		//la guardamos
+			const objectStore =this.bd.transaction('Tabla', 'readonly').objectStore('Tabla')
+			const peticion = objectStore.getAll()
+			peticion.onsuccess=(event)=>{
+                console.log('Base de datos cargada')
+				this.lista=event.target.result
+                this.callback()
+			}
+		}
+		peticion.onupgradeneeded =(event) =>{
+			this.bd=event.target.result
+			const objectStore= this.bd.createObjectStore('Tabla', {keyPath :'id'})		//Objeto para guardar los datos
+            
+        }
+		peticion.onerror=function(){		//si va mal
+			console.log('Fallo al cargar la base de datos.')
+		}
+	}
+
+    /**
+     * 
+     * @param {Object} pelicula Objeto pelicula con sus atributos
+     */
+    nuevaPelicula( pelicula){
+        console.log('Guardando a '+pelicula.nombre)
+		const datos = this.bd.transaction('Tabla','readwrite').objectStore('Tabla')		//iniciamos una transaccion
+		datos.add(pelicula)			//añadimos el objeto
+        this.listadoPeliculas()
+    }
+
+    /**
+     * Método que lee la base de datos y saca el listado
+     */
+    
+    listadoPeliculas(){
+        const objectStore =this.bd.transaction('Tabla', 'readonly').objectStore('Tabla')
+		const peticion = objectStore.getAll()
+		peticion.onsuccess=(event)=>{
+            this.lista=event.target.result
+            console.log(this.lista)
+        }
+        peticion.onerror=function(){		//si va mal
+            console.log('Fallo al cargar la base de datos.')
+        }
+    }
+
+    /**
+     * Método que recibe los datos de busqueda y devuelve los resultados de la misma
+     * @param {boolean} vista 
+     * @param {String} genero 
+     * @param {Method} callback 
+     */
+    buscar(vista, genero, callback){
+        const objectStore = this.bd.transaction("Tabla").objectStore("Tabla");
+		this.listaResultados = []
+		
+		const cursor1 = objectStore.openCursor()
+		cursor1.onsuccess = (evento) => {
+			const cursor = evento.target.result;
+			if (cursor) {
+				let pelicula = cursor.value
+				if (pelicula.vista == vista &amp;&amp; pelicula.genero == genero)
+					this.listaResultados.push(pelicula)
+				    cursor.continue()
+			} 
+            else {
+				callback(this.listaResultados)
+			}
+		}  
+    }
+    
+    /**
+     * Método que busca en la base de datos y extrae la película según el nombre
+     * @param {String} nombre 
+     * @param {Method} callback 
+     */
+    buscarNombre(nombre, callback){
+        const objectStore = this.bd.transaction("Tabla").objectStore("Tabla");
+		this.result 
+		const cursor1 = objectStore.openCursor()
+		cursor1.onsuccess = (evento) => {
+			const cursor = evento.target.result;
+			if (cursor) {
+				let pelicula = cursor.value
+				if (pelicula.nombre == nombre){
+					this.result=pelicula
+                }
+				    cursor.continue()
+			} 
+            else {
+				callback(this.result)
+			}
+		}  
+    }
+
+    /**
+     * Método que busca en la base de datos y modifica la pelicula
+     * @param {Int} id 
+     * @param {String} pelicula 
+     * @param {Method} callback 
+     */
+    modificarPelicula( id, pelicula, callback){
+        const objectStore =this.bd.transaction ('Tabla', 'readwrite').objectStore('Tabla')
+        const peticion = objectStore.get(parseInt(id))
+        
+        peticion.onerror=(event) =>{
+            console.log('Falló la lectura')
+        }
+        peticion.onsuccess=(event) =>{
+            const data = event.target.result
+            console.log('Leído', data)
+            //Datos cambiados
+            data.nombre=pelicula.nombre
+            data.descripcion=pelicula.descripcion
+            data.fecha=pelicula.fecha
+            data.duracion=pelicula.duracion
+            data.vista=pelicula.vista
+            data.genero=pelicula.genero
+            data.plataforma=pelicula.plataforma
+            data.imagen=pelicula.imagen
+
+            const peticion2 = objectStore.put(data)
+            this.listadoPeliculas()
+            peticion2.onerror =(event) =>{
+                console.log('No se pudo actualizar')
+                
+                callback()
+            }
+            peticion2.onsuccess =(event) => {
+                console.log('Se actualizó')
+                callback()
+            }
+        }
+        
+    }
+
+    /**
+     * Método que elimina un dato de la bbd según el id que tenga
+     * @param {Int} id 
+     * @param {Mehtod} callback 
+     */
+    eliminar(id, callback){
+        const datos = this.bd.transaction('Tabla','readwrite')		//iniciamos una transaccion
+		let request = datos.objectStore("Tabla").delete(id);
+        request.onsuccess=(event) => {
+            console.log('Se borro')
+            this.listadoPeliculas()
+            callback()
+        }
+        
+    }
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Controlador.html">Controlador</a></li><li><a href="Modelo_Modelo.html">Modelo</a></li><li><a href="Pelicula.html">Pelicula</a></li><li><a href="Vista.html">Vista</a></li><li><a href="VistaBuscar.html">VistaBuscar</a></li><li><a href="VistaDatos.html">VistaDatos</a></li><li><a href="VistaEliminar.html">VistaEliminar</a></li><li><a href="VistaListado.html">VistaListado</a></li><li><a href="VistaModificar.html">VistaModificar</a></li><li><a href="VistaNav.html">VistaNav</a></li><li><a href="VistaNueva.html">VistaNueva</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.0</a> on Fri Jan 20 2023 09:11:16 GMT+0100 (hora estándar de Europa central)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

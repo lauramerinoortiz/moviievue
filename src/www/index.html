@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset=utf-8 />
+	<meta name=viewport content="width=device-width, initial-scale=1" />
+	<meta name=author content="Laura Merino" />
+	<title>Moviie</title>
+	<link rel=stylesheet href=css/style.css />
+    <link rel="shotcut icon" href="assets//logo/logosimple.svg">
+</head>
+<body>
+    <!-- NAV MENU -->
+	<header>
+		<nav>
+			<ul>
+				<li id="li1" tabindex="1">
+					<img src="assets/logo/logo.svg" alt="Moviie logo de la web con el nombre" id="logo" >
+				</li>
+				<li tabindex="2">
+					Listado
+				</li>
+				<li tabindex="3">
+					Nueva
+				</li>
+				<li tabindex="4">
+					<img src="assets/iconos/busqueda.png" alt="Icono de búsqueda para buscar un elemento concreto" id="icono">
+				</li>
+			</ul>
+		</nav>
+	</header>
+    
+	<!-- DIV DE INICIO CON LISTADO -->
+    
+	<div id="inicio">
+        <div id="dialog" title="Bienvenido a Moviie!">
+            <p>Gracias por usar nuestra web. Accediendo a ella estás aceptando el uso de coockies para mejorar la experiencia. Todos los datos introducidos en esta web se guardarán en tu dispositvo  y no irán a niguna base de datos externa.</p>
+        </div>
+        <div id="listado">
+        <h1><br>Bienvenido/a!</h1><br>
+        <h1>¿Qué quieres hacer hoy?</h1>
+
+        </div>
+	</div>
+
+    <!-- DIV NUEVA PELICULA -->
+    <div id="nueva">
+        <h1>Nueva película</h1>
+        <form>
+            <div class="caja"><label for="nombre">Nombre*</label>
+                <input type="text" id="nombre"><br>
+                <label for="descripcion">Descripción*</label>
+                <textarea id="descripcion"></textarea><br>
+                <label for="fecha">Fecha de estreno*</label>
+                <input type="text" id="fecha"><br>
+                <label for="duracion">Duración en minutos*</label>
+                <input type="number" id="duracion" min="0" pattern="\d*"><br>
+                <label for="vista">¿Vista?</label>
+                <label for="vistaSi"><input type="radio" id="vistaSi" name="vista" value="Si">Si</label>
+                <label for="vistaNo"><input type="radio" id="vistaNo" name="vista" value="No" checked>No</label>
+
+            </div>
+            <div class="caja"><label for="genero">Género</label>
+                <select id="genero">
+                    <option>Drama</option>
+                    <option>Romántica</option>
+                    <option>Comedia</option>
+                    <option>Misterio</option>
+                    <option>Terror</option>
+                    <option>Histórica</option>
+                    <option>Adolescente</option>
+                    <option>Otro</option>
+                </select><br>
+                <label>Plataforma disponible:</label>
+                <input type="checkbox" value="HBO" id="hbo"><label for="hbo">HBO</label>
+                <input type="checkbox" value="Netflix" id="netflix"><label for="netflix">Netflix</label>
+                <input type="checkbox" value="Disney" id="disney"><label for="disney">Disney+</label><br>
+                <input type="checkbox" value="Amazon" id="amazon"><label for="amazon">Amazon Prime</label><br>
+                <label for="imagen">URL de imagen <input type="text" id="imagen"  title="Copia la URL de internet de una foto de esta peli y pégala aqui."></label>
+            </div>
+            
+        </form>
+        <p id="camposrellenos">*Debe rellenar todos los campos con asterico</p>
+        <p id="insertado">Insertado correctamente</p>
+        <button class="btnEliminar">Borrar</button>
+        <button class="btnModificar">Enviar</button>
+    </div>
+
+    <!-- DIV CON LOS DATOS DE LA PELICULA -->
+    <div id="datos">
+        <h1>Datos de la película</h1>
+        <table summary="tabla con los datos de la película seleccionada" id="tablaDatos">
+            <tr>
+                <th>Nombre</th>
+                <td id="datosNombre"></td>
+            <tr>
+                <th>Descripción</th>
+                <td id="datosDescripcion"> </td>
+            </tr>
+            <tr>
+                <th>Fecha de estreno</th>
+                <td id="datosFecha"></td>
+            </tr>
+            <tr>
+                <th>Duración</th>
+                <td id="datosDuracion"></td>
+            </tr>
+            <tr>
+                <th>Género</th>
+                <td id="datosGenero"></td>
+            </tr>
+            <tr>
+                <th>Plataformas</th>
+                <td id="datosPlataformas"></td>
+            </tr>
+            <tr>
+                <th>¿Vista?</th>
+                <td id="datosVista"></td>
+            </tr>
+        </table>
+
+        <button class="btnEliminar">Eliminar</button>
+        <button class="btnModificar">Modificar</button>
+    </div>
+
+    <!-- DIV DE MENSAJE DE CONFIRMACION PARA ELIMINAR -->
+    <div id="eliminar">
+        <h1>¿Seguro que quieres eliminar esta película?</h1>
+        <p>Esta acción no se puede deshacer.</p>
+        <button class="btnEliminar">Cancelar</button>
+        <button class="btnModificar">Aceptar</button>
+    </div>
+    
+    <!-- DIV PARA MODIFICAR PELICULA -->
+    <div id="modificar">
+        <h1>Editar película</h1>
+        <form>
+            <div class="caja"><label for="nombreEditar">Nombre*</label>
+                <input type="text" value="Nombre de peli" id="nombreEditar"><br>
+                <label for="descripcionEditar">Descripción*</label>
+                <textarea id="descripcionEditar">Descripción precisa de la película*</textarea><br>
+                <label for="fechaEditar">Fecha de estreno*</label>
+                <input type="text" value="2019-12-25" id="fechaEditar"><br>
+                <label for="duracionEditar">Duración en minutos*</label>
+                <input type="number" value="120" id="duracionEditar" pattern="\d*"><br>
+                <label for="vistaEditar">¿Vista?</label>
+                <label for="vistaSiEditar"><input type="radio" id="vistaSiEditar" name="vista" value="Si" >Si</label>
+                <label for="vistaNoEditar"><input type="radio" id="vistaNoEditar" name="vista" value="No" checked>No</label>
+
+            </div>
+            <div class="caja"><label for="generoEditar">Género</label>
+                <select id="generoEditar">
+                    <option>Drama</option>
+                    <option>Romántica</option>
+                    <option>Comedia</option>
+                    <option>Misterio</option>
+                    <option>Terror</option>
+                    <option>Histórica</option>
+                    <option>Adolescente</option>
+                    <option>Otro</option>
+                </select><br>
+                <label for="checkbok">Plataforma disponible:</label>
+                <label for="hboEditar"><input type="checkbox" value="hboEditar" id="hboEditar" checked>HBO</label>
+                <label for="netflixEditar"><input type="checkbox" value="netflixEditar"  id="netflixEditar">Netflix</label>
+                <label for="disneyEditar"><input type="checkbox" value="disneyEditar" id="disneyEditar">Disney+</label><br>
+                <label for="amazonEditar"><input type="checkbox" value="amazonEditar" id="amazonEditar">Amazon Prime</label><br>
+                <label for="imagen">URL de imagen <input type="text" id="imagenEditar" title="Copia la URL de internet de una foto de esta peli y pégala aqui."></label>
+            </div>
+        </form>
+        <p id="camposrellenosEditar">*Debe rellenar todos los campos con asterico</p>
+        <button class="btnEliminar">Cancelar</button>
+        <button class="btnModificar">Enviar</button>
+    </div>
+    
+    <!-- BUSQUEDA -->
+    <div id="buscar">
+	    <h1>Añade estado y género</h1>
+        <form>
+            <label for="vistaBuscar">¿Vista?</label>
+            <label for="vistaSiBuscar"><input type="radio" id="vistaSiBuscar" name="vista" value="Si">Si</label>
+            <label for="vistaNoBuscar"><input type="radio" id="vistaNoBuscar" name="vista" value="No" checked>No</label><br>
+
+            <label for="generoBuscar">Género</label>
+                <select id="generoBuscar">
+                    <option>Drama</option>
+                    <option>Romántica</option>
+                    <option>Comedia</option>
+                    <option>Misterio</option>
+                    <option>Terror</option>
+                    <option>Histórica</option>
+                    <option>Adolescente</option>
+                    <option>Otro</option>
+                </select>
+        </form>
+        <button class="btnModificar">Enviar</button>
+        <div id="resul"></div>
+    </div>
+
+    <!-- FOOTER -->
+	<footer>
+		<p>Moviie es una web para la organización de películas</p>
+        <img src="assets/recursos/wcag2AA.png" alt="Logotipo de Accesibilidad del tipo AA">
+	</footer>
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+    <script type="module" src="js/controladores/app.js"></script>
+</body>
+</html>

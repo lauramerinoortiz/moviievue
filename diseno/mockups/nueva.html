@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang=es>
+<head>
+	<meta charset=utf-8 />
+	<meta name=viewport content="width=device-width, initial-scale=1" />
+	<meta name=author content="Laura Merino" />
+	<title>Moviie</title>
+	<link rel=stylesheet href="../../src/www/css/css.css" />
+	<link rel="shotcut icon" href="../../src/www/assets//logo/logosimple.svg">
+</head>
+<body>
+	<header>
+		<nav>
+			<ul>
+				<li id="li1">
+					<img src="../../src/www/assets/logo/logo.svg" alt="Logo Moviie" id="logo" >
+				</li>
+				<li>
+					Listado
+				</li>
+				<li>
+					Nueva
+				</li>
+				<li>
+					<img src="../../src/www/assets/iconos/busqueda.png" alt="Icono de búsqueda" id="icono">
+				</li>
+			</ul>
+		</nav>
+	</header>
+	<h1>Nueva película</h1>
+	<div id="nueva">
+        <form>
+            <div class="caja"><label>Nombre</label>
+                <input type="text"><br>
+                <label>Descripción</label>
+                <textarea></textarea><br>
+                <label>Fecha de estreno</label>
+                <input type="date"><br>
+                <label>Duración</label>
+                <input type="number"><br>
+                <label for="vista">¿Vista?</label>
+                <input type="radio" id="vistaSi" name="vista" value="Si"><label for="vistaSi">Si</label>
+                <input type="radio" id="vistaNo" name="vista" value="No"><label for="vistaNo">No</label>
+
+            </div>
+            <div class="caja"><label>Género</label>
+                <select>
+                    <option>Drama</option>
+                    <option>Comedia</option>
+                    <option>Misterio</option>
+                    <option>Terror</option>
+                    <option>Histórica</option>
+                    <option>Infantil</option>
+                </select><br>
+                <label>Plataforma disponible:</label>
+                <label><input type="checkbox" value="HBO">HBO</label>
+                <label><input type="checkbox" value="Netflix">Netflix</label>
+                <label><input type="checkbox" value="Disney">Disney+</label><br>
+                <label><input type="checkbox" value="Amazon">Amazon Prime</label>
+                <label><input type="checkbox" value="Youtube">YouTube</label>
+                <label><input type="checkbox" value="Movistar">Movistar</label><br>
+                <label><input type="checkbox" value="Apple">Apple TV+</label><br>
+                <label>Añadir imagen <input type="file"></label>
+            </div>
+            
+        </form>
+        <button id="btnEliminar">Cancelar</button>
+        <button id="btnModificar">Enviar</button>
+    </div>
+	<footer>
+		<p>Moviie es una web para la organización de películas</p>
+        <img src="../../src/www/assets/recursos/wcag2AA.png">
+	</footer>
+</body>
+</html>
