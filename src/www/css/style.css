@@ -23,6 +23,15 @@ body{
     min-height: 700px;
 }
 
+.legales{
+    color: white;
+}
+
+.legales > input{
+    margin-right:20px;
+    cursor: pointer;
+}
+
 h1{
     font-family:"Sunday Best";
     color: white;

@@ -55,6 +55,7 @@ export class VistaNueva extends Vista {
           this.amazon=$('#amazon').checkboxradio()
           this.amazon.click(this.anadirPlataforma.bind(this,'Amazon'))
 
+          this.proteccion=$('#legales').checkboxradio()
           this.plataformas=new Set()
 	}
 

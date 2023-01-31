@@ -48,8 +48,10 @@ export class VistaModificar extends Vista {
           this.amazon=$('#amazonEditar').checkboxradio()
           this.amazon.click(this.anadirPlataforma.bind(this,'Amazon'))
 
-          this.cancelar=this.div.find('button')[0]
+          this.cancelar=this.div.find('button').eq(0)
           this.cancelar.click(this.pulsarCancelar.bind(this))
+
+          this.proteccion=$('#legalesEditar').checkboxradio()
 
           this.plataformas=new Set()  //Set para guardar los datos introducidos
 	}
