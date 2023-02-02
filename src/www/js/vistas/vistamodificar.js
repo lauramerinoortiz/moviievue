@@ -68,6 +68,8 @@ export class VistaModificar extends Vista {
       */
      pulsarAceptar(id) {
           let error=$('#camposrellenosEditar')
+          let legal=$('#legalEditar')
+          let legalCheck=$('#legalesEditar')
           console.log(id)
           if(this.nombre.val()==undefined){
                error.css('display','block')
@@ -84,6 +86,9 @@ export class VistaModificar extends Vista {
           else if(this.duracion.val()==undefined){
                error.css('display','block')
                this.duracion.css('borderColor',"red")
+          }
+          else if(!legalCheck.prop('checked')){
+               legal.css('display','block')
           }
           else{
                //Coger los datos del formulario
@@ -131,6 +136,8 @@ export class VistaModificar extends Vista {
           this.plataformas.clear()
           let error=$('#camposrellenosEditar')
           error.css('display','none')
+          let legal=$('#legalEditar')
+          legal.css('display','none')
           this.nombre.css('borderColor',"#808080")
           this.descripcion.css('borderColor',"#808080")
           this.fecha.css('borderColor',"#808080")
