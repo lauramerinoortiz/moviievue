@@ -13,6 +13,7 @@
 *{
     margin: 0;
     padding: 0;
+    text-decoration: none;
 }
 
 body{
@@ -358,6 +359,8 @@ footer p{
 footer img{
     float: right;
     height: 50px;
+    position: relative;
+    top: -55px;
 }
 
 /*Tablet*/
@@ -399,4 +402,13 @@ footer img{
     }
 
     
+}
+
+
+/* ----LEGALES----- */
+
+#legal{
+    padding: 50px;
+    color: white;
+    font-kerning: 20px;
 }
