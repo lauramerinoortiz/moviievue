@@ -4,70 +4,56 @@ import {Vista} from './vista.js'
  * Clase VistaListado que muestra el CRUD de categorías y subcategorías
  * Gestiona los elementos y métodos de esta Vista
  */
-export class VistaListado extends Vista {
-
-	/**
-     * Contructor de la clase VistaListado
-     * @param {HTMLDivElement} div Div de la vista
-     * @param {Object} controlador Controlador de la vista
-     */
-	constructor(div, controlador) {
-		super(div)
-          this.controlador = controlador
-
-          this.listado=$('#listado')
-          this.peliculas
-          
-	}
-
-
-     /**
-      * Método para cuando damos click a una pelicula
-      */
-     pulsarPelicula(nombre){
-          this.controlador.pulsarPelicula(nombre)
-     }
-
-     /**
-      * Método que saca el listado de peliculas guardadas en la base de datos
-      * @param {Array} lista 
-      */
-     mostrarListado(lista){
-          this.listado.empty()       //vaciamos el div
-          if(lista==''){
-               let vacio=$('<h1></h1>')
-               vacio.append('No hay datos aún. Dale ya a "Nueva" y añade una película.')
-               this.listado.append(vacio)
-          }
-          else{
-               let cabezado=$('<h1></h1>')
-               cabezado.append('Listado de películas')
-               this.listado.append(cabezado)
-               let cont=5
-               for(let item of lista){
-                    let div=$('<div></div>')
-                    div.addClass('pelicula')
-                    if(item.imagen!=''){
-                         div.css('backgroundImage',"url('"+item.imagen+"')")
+export function VistaListado(controlador) {
+     return VistaListado=Vue.createApp({
+          data(){
+               return{
+                    controlador:controlador,
+                    lista:'',
+                    estado:'inactivo',
+                    vacio: 'inactivo'
+               }
+          },
+          template:`<div id="listado" :class=estado>
+          <h1 :class=vacio>'No hay datos aún. Dale ya a "Nueva" y añade una película.</h1>
+          <h1>Listado de películas</h1>
+          <div v-for="peli in lista" class="pelicula" v-bind:style="{ 'background-image': 'url(' + peli.imagen + ')'}"><div class="oculto"><h2>{{peli.nombre}}</h2></div></div>
+          </div>`,
+          methods: {
+                /**
+                * Método para cuando damos click a una pelicula
+                */
+               pulsarPelicula(nombre){
+                    this.controlador.pulsarPelicula(nombre)
+               },
+               mostrar(estado){
+                    if(estado){
+                         this.estado='activo'
+                         console.log(this.lista)
                     }
                     else{
-                         div.css('backgroundImage',"url('assets/recursos/fondo.png')")
+                         this.estado='inactivo'
                     }
-     
-                    let oculto=$('<div></div>')
-                    oculto.addClass('oculto')
-                    div.append(oculto)
-     
-                    let titulo=$('<h2></h2>')
-                    div.append(titulo)
-                    div.attr("tabindex",cont)
-                    div.attr("role","button")
-                    titulo.append(item.nombre)
-                    this.listado.append(div)
-                    div.click(this.pulsarPelicula.bind(this, item.nombre))
-                    div.keypress(this.pulsarPelicula.bind(this, item.nombre))
-                    cont++
+               },
+
+               /**
+                * Método que saca el listado de peliculas guardadas en la base de datos
+                * @param {Array} lista 
+                */
+               mostrarListado(){
+                    //this.listado.empty()       vaciamos el div
+                    if(this.lista==''){
+                         console.log('vaciooooooooo')
+                         this.vacio='activo'
+                    }
+                    else{
+                         this.vacio='inactivo'
+                         console.log(this.lista)
+                    }
+               },
+               pulsarPeli(){
+                    this.controlador.pulsarPelicula()
                }
           }
-     }
+     })
 }

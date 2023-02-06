@@ -24,6 +24,13 @@ body{
     min-height: 700px;
 }
 
+.inactivo{
+    display: none !important;
+}
+.activo{
+    display: block;
+}
+
 .legales{
     color: white;
 }
@@ -94,7 +101,7 @@ header nav ul li:first-child{
 #listado, #resul{
     width: 80%;
     height: auto;
-    display: flex !important;
+    display: flex ;
     flex-wrap: wrap;
     justify-content:space-around;
     margin: auto;
@@ -412,3 +419,4 @@ footer img{
     color: white;
     font-kerning: 20px;
 }
+

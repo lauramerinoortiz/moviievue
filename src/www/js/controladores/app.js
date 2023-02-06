@@ -30,11 +30,9 @@ class Controlador {
 
 	iniciar2(){
 		console.log('iniciar 2')
-		this.nav = $('nav')
-		this.vistaNav = new VistaNav(this.nav, this)
+		this.menu=new VistaNav(this).mount('#header')
 
-        this.divlistado= $('#inicio')
-		this.vistaListado=new VistaListado(this.divlistado, this)
+		this.vistaListado=new VistaListado(this).mount('#inicio')
 
 		this.divnueva=$('#nueva')
 		this.vistaNueva=new VistaNueva(this.divnueva, this)
@@ -164,7 +162,8 @@ class Controlador {
 	 */
 	pulsarListado(){
 		let lista=this.modelo.pulsarListado()
-		this.vistaListado.mostrarListado(lista)
+		this.vistaListado.lista=lista
+		this.vistaListado.mostrarListado()
 		this.pulsarNavListado()
 	}
 
