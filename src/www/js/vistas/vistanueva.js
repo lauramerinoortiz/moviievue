@@ -78,6 +78,8 @@ export class VistaNueva extends Vista {
           this.plataformas.clear()
           let error=$('#camposrellenos')
           error.css('display','none')
+          let legal=$('#legalNueva')
+          legal.css('display','none')
           let insertado=$('#insertado')
           insertado.css('display','none')
           this.nombre.css('borderColor',"#808080")
@@ -91,6 +93,7 @@ export class VistaNueva extends Vista {
       */
      pulsarAceptar() {
           let error=$('#camposrellenos')
+          let legal=$('#legalNueva')
           error.css('display','none')
           let insertado=$('#insertado')
           insertado.css('display','none')
@@ -108,6 +111,8 @@ export class VistaNueva extends Vista {
           let duracion=this.duracion.val()
 
           let imagen=this.imagen.val()
+
+          let legales=$('#legales')
 
           let vista=null
           if($('#vistaSi').is(':checked')){
@@ -135,6 +140,10 @@ export class VistaNueva extends Vista {
           else if(duracion==''){
                error.css('display', 'block')
                this.duracion.css('borderColor',"red")
+          }
+          else if(!legales.prop('checked') ){
+               legal.css('display', 'block')
+               legales.css('borderColor',"red")
           }
           else{
                let pelicula= new Pelicula()
