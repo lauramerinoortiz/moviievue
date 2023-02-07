@@ -1,5 +1,4 @@
 "use strict" //activo modo estricto
-import {Vista} from './vista.js'
 /**
  * Clase VistaListado que muestra el CRUD de categorías y subcategorías
  * Gestiona los elementos y métodos de esta Vista
@@ -17,7 +16,7 @@ export function VistaListado(controlador) {
           template:`<div id="listado" :class=estado>
           <h1 :class=vacio>'No hay datos aún. Dale ya a "Nueva" y añade una película.</h1>
           <h1>Listado de películas</h1>
-          <div v-for="peli in lista" class="pelicula" v-bind:style="{ 'background-image': 'url(' + peli.imagen + ')'}"><div class="oculto"><h2>{{peli.nombre}}</h2></div></div>
+          <div v-for="peli in lista" class="pelicula" v-on:click="pulsarPeli(peli.nombre)" v-bind:style="{ 'background-image': 'url(' + peli.imagen + '), url(assets/logo/logosimple.png)'}"><div class="oculto"></div><h2>{{peli.nombre}}</h2></div>
           </div>`,
           methods: {
                 /**
@@ -26,6 +25,10 @@ export function VistaListado(controlador) {
                pulsarPelicula(nombre){
                     this.controlador.pulsarPelicula(nombre)
                },
+               /**
+                * Método que muestra u oculta la vista
+                * @param {Boolean} estado 
+                */
                mostrar(estado){
                     if(estado){
                          this.estado='activo'
@@ -51,8 +54,12 @@ export function VistaListado(controlador) {
                          console.log(this.lista)
                     }
                },
-               pulsarPeli(){
-                    this.controlador.pulsarPelicula()
+               /**
+                * Método que se ejecutaal hacer click en un apelicula y llama al controlador para que muestra sus datos
+                * @param {String} nombre 
+                */
+               pulsarPeli(nombre){
+                    this.controlador.pulsarPelicula(nombre)
                }
           }
      })

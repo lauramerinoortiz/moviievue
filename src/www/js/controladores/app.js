@@ -140,6 +140,8 @@ class Controlador {
 
 		this.vistaListado=new VistaListado(this).mount('#inicio')
 
+		this.vistaBuscar=new VistaBuscar(this).mount('#buscar')
+
 		this.divnueva=$('#nueva')
 		this.vistaNueva=new VistaNueva(this.divnueva, this)
         
@@ -152,8 +154,7 @@ class Controlador {
         this.divModificar=$('#modificar')
         this.vistaModificar=new VistaModificar(this.divModificar, this)
 
-		this.divBuscar=$('#buscar')
-        this.vistaBuscar=new VistaBuscar(this.divBuscar, this)
+		
 		
         this.ocultarVistas()
 		this.pulsarListado()
@@ -291,7 +292,7 @@ class Controlador {
 	 * @param {Array} lista 
 	 */
 	mandarLista(lista){
-		this.vistaBuscar.listar(lista)
+		this.vistaBuscar.lista=lista
 	}
 
 	/**
