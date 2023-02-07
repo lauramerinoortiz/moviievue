@@ -10,7 +10,8 @@ export function VistaBuscar (controlador) {
                return{
                     controlador:controlador,
                     estado:'inactivo',
-                    listadoBusqueda:''
+                    listadoBusqueda:'',
+                    vacio: false
                }
           },
           template: `<div :class=estado><h1>Añade estado y género</h1>
@@ -32,12 +33,15 @@ export function VistaBuscar (controlador) {
                     </select>
                </form>
                <button class="btnModificar" v-on:click="pulsarAceptar">Enviar</button>
+               
                <div id="resul">
-                    <div v-for="peli in lista" v-on:click="pulsarPeli(peli.nombre)" v-bind:style="{ 'background-image': 'url(' + peli.imagen + '), url(assets/logo/logosimple.png)'}">
+                    <div class="pelicula" v-for="peli in listadoBusqueda" v-on:click="pulsarPeli(peli.nombre)" v-bind:style="{ 'background-image': 'url(' + peli.imagen + '), url(assets/logo/logosimple.png)'}">
                     <div class="oculto"></div>
                     <h2>{{peli.nombre}}</h2>
                     </div>
+                    <h2 v-if="vacio">No hay datos que coincidan<h2><br>
                </div>
+               
                </div>`,
           methods:{
                /**
@@ -69,52 +73,12 @@ export function VistaBuscar (controlador) {
                     let lista=this.controlador.pulsarBuscar(vista, opcion)
                },
 
-               /**
-                * Método que saca las peliculas según la lista de resultados que recibe
-                * @param {Array} lista 
-                */
-               listar(lista){
-                    let resul=$('#resul')
-                    resul.empty()        //vaciamos el div
-                    let cont=100
-                    if(lista==''){      //si la lista viene vacia porque no hay coincidencias
-                         let vacio=$('<h2></h2>')
-                         vacio.append('No hay datos que coincidan')
-                         resul.append(vacio)
-                    }
-                    else{
-                         for(let item of lista){
-                              let div=$('<div></div>')
-                              div.addClass('pelicula')
-                              if(item.imagen!=''){
-                                   div.css('backgroundImage',"url('"+item.imagen+"')")
-                              }
-                              else{
-                                   div.css('backgroundImage',"url('assets/recursos/fondo.png')")
-                              }
-
-                              let oculto=$('<div></div>')
-                              oculto.addClass('oculto')
-                              div.append(oculto)
-
-                              let titulo=$('<h2></h2>')
-                              div.append(titulo)
-                              div.attr("tabindex",cont)
-                              div.attr("role","button")
-                              titulo.append(item.nombre)
-                              resul.append(div)
-                              div.click(this.pulsarPelicula.bind(this))
-                              div.keypress(this.pulsarPelicula.bind(this))
-                              cont++
-                         }
-                         
-                    }
-               },
+               
                /**
                 * Método para cuando damos click a una pelicula
                 */
-               pulsarPelicula(){
-                    this.controlador.pulsarPelicula()
+               pulsarPeli(nombre){
+                    this.controlador.pulsarPelicula(nombre)
                }
           }
      })

@@ -37,7 +37,6 @@ export class VistaNueva extends Vista {
           this.imagen=$('#imagen').tooltip()
 
           this.borrar=this.div.find('button').eq(0)
-          console.log(this.borrar)
           this.borrar.click(this.pulsarBorrar.bind(this))
 
           this.aceptar=this.div.find('button').eq(1)
@@ -173,7 +172,6 @@ export class VistaNueva extends Vista {
           else{
                this.plataformas.add(elemento)
           }
-
           console.log(this.plataformas)
      }
 

@@ -15,7 +15,7 @@ export function VistaListado(controlador) {
           },
           template:`<div id="listado" :class=estado>
           <h1 :class=vacio>'No hay datos aún. Dale ya a "Nueva" y añade una película.</h1>
-          <h1>Listado de películas</h1>
+          <h1 v-if=lista!=''>Listado de películas</h1>
           <div v-for="peli in lista" class="pelicula" v-on:click="pulsarPeli(peli.nombre)" v-bind:style="{ 'background-image': 'url(' + peli.imagen + '), url(assets/logo/logosimple.png)'}"><div class="oculto"></div><h2>{{peli.nombre}}</h2></div>
           </div>`,
           methods: {

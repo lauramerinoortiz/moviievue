@@ -42,7 +42,6 @@ class Controlador {
 			//-----------------------------------------------------
 			const seccionCookie =$('section.cookies');
 			const cookieSi = $('.cookies__boton--si');
-			console.log(cookieSi)
 			const cookieNo = $('.cookies__boton--no');
 			const nuevosScripts = $('#nuevosScripts');
 	
@@ -136,11 +135,13 @@ class Controlador {
 
 	iniciar2(){
 		console.log('iniciar 2')
-		this.menu=new VistaNav(this).mount('#header')
+		this.vistaNav=new VistaNav(this).mount('#header')
 
 		this.vistaListado=new VistaListado(this).mount('#inicio')
 
 		this.vistaBuscar=new VistaBuscar(this).mount('#buscar')
+
+		this.vistaEliminar=new VistaEliminar(this).mount('#eliminar')
 
 		this.divnueva=$('#nueva')
 		this.vistaNueva=new VistaNueva(this.divnueva, this)
@@ -148,8 +149,7 @@ class Controlador {
         this.divdatos=$('#datos')
 		this.vistaDatos=new VistaDatos(this.divdatos, this)
 
-		this.divEliminar=$('#eliminar')
-        this.vistaEliminar=new VistaEliminar(this.diveliminar,  this)
+        
 
         this.divModificar=$('#modificar')
         this.vistaModificar=new VistaModificar(this.divModificar, this)
@@ -240,7 +240,11 @@ class Controlador {
 	 * @param {Int} id 
 	 */
 	eliminar(id){
-		this.modelo.eliminar(id, this.iniciar.bind(this))
+		this.modelo.eliminar(id, this.eliminado.bind(this))
+	}
+
+	eliminado(){
+		location.reload();
 	}
 
     /**
@@ -271,8 +275,9 @@ class Controlador {
 	 * Método que coge el listado y lo lleva a la vista para que lo muestre
 	 */
 	pulsarListado(){
-		let lista=this.modelo.pulsarListado()
-		this.vistaListado.lista=lista
+		this.vistaListado.lista=this.modelo.pulsarListado()
+		console.log('liiiiiiiiiiiiiiistaaaaaaaaaaa ')
+		console.log(this.vistaListado.lista)
 		this.vistaListado.mostrarListado()
 		this.pulsarNavListado()
 	}
@@ -292,7 +297,16 @@ class Controlador {
 	 * @param {Array} lista 
 	 */
 	mandarLista(lista){
-		this.vistaBuscar.lista=lista
+		this.vistaBuscar.listadoBusqueda=lista
+		if(lista==''){
+			this.vistaBuscar.vacio=true
+			console.log(' vacio listado= '+this.vistaBuscar.listadoBusqueda)
+		}
+		else{
+			this.vistaBuscar.vacio=false
+			console.log('relleno listado= '+this.vistaBuscar.listadoBusqueda)
+		}
+		
 	}
 
 	/**
