@@ -18,8 +18,7 @@ export class VistaNueva extends Vista {
           this.div=$('#nueva')
 
           this.nombre=$('#nombre').autocomplete({
-               source: [ "Titanic", "Harry Potter", "Mamma Mia", "Shrek", "Friends", "The Walking Dead", "Dune", "Avatar", "Simpsons", "Avengers", "Spiderman" ],
-               
+               source: [ "Titanic", "Harry Potter", "Mamma Mia", "Shrek", "Friends", "The Walking Dead", "Dune", "Avatar", "Simpsons", "Avengers", "Spiderman" ]
           })
           this.descripcion=$('#descripcion')
           this.fecha=$('#fecha').datepicker( {

@@ -270,6 +270,9 @@ header nav ul li:first-child{
     margin: 0;
     margin-top: 40px;
 }
+#eliminar button{
+    margin-bottom: 150px;
+}
 
 #buscar{
     color: white;
