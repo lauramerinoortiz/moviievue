@@ -117,7 +117,7 @@ header nav ul li:first-child{
     width: 200px;
     height: 250px;
     background-repeat: no-repeat;
-    background-size: cover;
+    background-size: contain;
     background-position: center;
     color: transparent;
     cursor: pointer;
