@@ -39,7 +39,7 @@ export function VistaBuscar (controlador) {
                     <div class="oculto"></div>
                     <h2>{{peli.nombre}}</h2>
                     </div>
-                    <h2 v-if="vacio">No hay datos que coincidan<h2><br>
+                    <h2 v-if="vacio">No hay datos que coincidan</h2><br>
                </div>
                
                </div>`,

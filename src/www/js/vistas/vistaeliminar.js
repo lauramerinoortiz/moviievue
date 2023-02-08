@@ -1,5 +1,4 @@
 "use strict" //activo modo estricto
-import {Vista} from './vista.js'
 /**
  * Clase VistaNueva que muestra el mensaje de confirmacion para eliminar
  * Gestiona los elementos y métodos de esta Vista

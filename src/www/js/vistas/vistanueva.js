@@ -1,177 +1,216 @@
 "use strict" //activo modo estricto
 import { Pelicula } from './pelicula.js'
-import {Vista} from './vista.js'
 /**
  * Clase VistaNueva que muestra el formulario para una nueva pelicula
  * Gestiona los elementos y métodos de esta Vista
  */
-export class VistaNueva extends Vista {
+export function VistaNueva (controlador) {
+     return VistaNueva=Vue.createApp({
+          data(){
+               return{
+                    controlador:controlador,
+                    plataformas:new Set(),
+                    estado:'inactivo',
+                    datos:{
+                         nombre:'',
+                         descripcion:'',
+                         fecha:'',
+                         duracion:'',
+                         vista:'',
+                         genero:'',
+                         plataformas:[],
+                         imagen:'',
+                         legales:''
+                    }
+               }
+          },
+          template: `<div :class=estado>
+          <h1>Nueva película</h1>
+          <form>
+              <div class="caja"><label for="nombre">Nombre*</label>
+                  <input type="text" id="nombre" v-model="datos.nombre"><br>
+                  <label for="descripcion">Descripción*</label>
+                  <textarea id="descripcion" v-model="datos.descripcion"></textarea><br>
+                  <label for="fecha">Fecha de estreno*</label>
+                  <input type="text" id="fecha" v-model="datos.fecha"><br>
+                  <label for="duracion">Duración en minutos*</label>
+                  <input type="number" id="duracion" min="0" pattern="\d*" v-model="datos.duracion"><br>
+                  <label for="vista">¿Vista?</label>
+                  <label for="vistaSi"><input type="radio" v-model="datos.vista" id="vistaSi" name="vista" value="Si">Si</label>
+                  <label for="vistaNo"><input type="radio" v-model="datos.vista" id="vistaNo" name="vista" value="No" checked>No</label>
+  
+              </div>
+              <div class="caja"><label for="genero">Género</label>
+                  <select id="genero" v-model="datos.genero">
+                      <option>Drama</option>
+                      <option>Romántica</option>
+                      <option>Comedia</option>
+                      <option>Misterio</option>
+                      <option>Terror</option>
+                      <option>Histórica</option>
+                      <option>Adolescente</option>
+                      <option>Otro</option>
+                  </select><br>
+                  <label>Plataforma disponible:</label>
+                  <input type="checkbox" v-model="datos.plataformas" value="HBO" id="hbo"><label for="hbo">HBO</label>
+                  <input type="checkbox" v-model="datos.plataformas" value="Netflix" id="netflix"><label for="netflix">Netflix</label>
+                  <input type="checkbox" v-model="datos.plataformas" value="Disney" id="disney"><label for="disney">Disney+</label><br>
+                  <input type="checkbox" v-model="datos.plataformas" value="Amazon" id="amazon"><label for="amazon">Amazon Prime</label><br>
+                  <label for="imagen" >URL de imagen <input type="text" id="imagen" v-model="datos.imagen" title="Copia la URL de internet de una foto de esta peli y pégala aqui."></label>
+              </div>
+              
+          </form>
+          <p id="camposrellenos">*Debe rellenar todos los campos con asterico</p>
+          <p id="insertado">Insertado correctamente</p>
+          <p id="legalNueva">*Recuerde aceptar las condiones legales</p>
+          <label for="legales" class="legales"><input type="checkbox" v-model="datos.legales" id="legales">Aceptas los términos legales y la ley de protección de datos sin reservas</label><br>
+          <button class="btnEliminar" v-on:click="pulsarBorrar">Borrar</button>
+          <button class="btnModificar" v-on:click="pulsarAceptar">Enviar</button>
+          </div>`,
+          methods:{
+               /**
+               * Método que muestra u oculta la vista
+               * @param {Boolean} estado 
+               */
+               mostrar(estado){
+                    if(estado){
+                         this.estado='activo'
+                    }
+                    else{
+                         this.estado='inactivo'
+                    }
+               },
+               /**
+                * Método para cuando damos al boton borrar que limpia el formulario
+                */
+               pulsarBorrar() {
+                    this.datos.nombre=''
+                    this.datos.descripcion=''
+                    this.datos.fecha=''
+                    this.datos.duracion=''
+                    this.datos.vista='No'
+                    this.datos.genero=''
+                    this.datos.plataformas=[]
+                    this.datos.imagen=''
+                    this.datos.legales=''
+               },
 
-	/**
-     * Contructor de la clase VistaNueva
-     * @param {HTMLDivElement} div Div de la vista
-     * @param {Object} controlador Controlador de la vista
-     */
-	constructor(div, controlador) {
-		super(div)
-          this.controlador = controlador
-          this.div=$('#nueva')
+               /**
+               * Método para cuando damos al boton aceptar
+               */
+               pulsarAceptar() {
+                    console.log(this.datos)
+                    // let error=$('#camposrellenos')
+                    // let legal=$('#legalNueva')
+                    // error.css('display','none')
+                    // let insertado=$('#insertado')
+                    // insertado.css('display','none')
+                    // this.nombre.css('borderColor',"#808080")
+                    // this.descripcion.css('borderColor',"#808080")
+                    // this.fecha.css('borderColor',"#808080")
+                    // this.duracion.css('borderColor',"#808080")
 
-          this.nombre=$('#nombre').autocomplete({
-               source: [ "Titanic", "Harry Potter", "Mamma Mia", "Shrek", "Friends", "The Walking Dead", "Dune", "Avatar", "Simpsons", "Avengers", "Spiderman" ]
-          })
-          this.descripcion=$('#descripcion')
-          this.fecha=$('#fecha').datepicker( {
-               dateFormat: "dd/mm/yy",
-               changeYear: true,
-               changeMonth: true,
-               monthNamesShort: ['Enero','Febrero','Marzo','Abril','Mayo','Junio',
-               'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
-               prevText: "⃖",  //flecha izquierda
-               nextText: "⃗",  //flecha derecha
-               dayNamesMin: [ "Dom", "Lun", "Mar", "Mie", "Jue", "Vie", "Sab" ],
-               yearRange: "1895:2045"
-          })
-          this.duracion=$('#duracion')
-          this.imagen=$('#imagen').tooltip()
+                    // let nombre=this.nombre.val()
 
-          this.borrar=this.div.find('button').eq(0)
-          this.borrar.click(this.pulsarBorrar.bind(this))
+                    // let descripcion=this.descripcion.val()
+                    
+                    // let fecha=this.fecha.val()
+                    
+                    // let duracion=this.duracion.val()
 
-          this.aceptar=this.div.find('button').eq(1)
-          this.aceptar.click(this.pulsarAceptar.bind(this))
+                    // let imagen=this.imagen.val()
 
-          this.netflix=$('#netflix').checkboxradio()
-          this.netflix.click(this.anadirPlataforma.bind(this,'Netflix'))
+                    // let legales=$('#legales')
 
-          this.hbo=$('#hbo').checkboxradio()
-          this.hbo.click(this.anadirPlataforma.bind(this, 'Hbo'))
+                    // let vista=null
+                    // if($('#vistaSi').is(':checked')){
+                    //      vista=true
+                    // }
+                    // if($('#vistaNo').is(':checked')){
+                    //      vista=false
+                    // }
 
-          this.disney=$('#disney').checkboxradio()
-          this.disney.click(this.anadirPlataforma.bind(this, 'Disney'))
+                    // let genero=$('#genero option:selected');
+                    // let opcion=genero.val()
+                    
+                    // if(nombre==''){
+                    //      error.css('display', 'block')
+                    //      this.nombre.css('borderColor',"red")
+                    // }
+                    // else if(descripcion==''){
+                    //      error.css('display', 'block')
+                    //      this.descripcion.css('borderColor',"red")
+                    // }
+                    // else if(fecha==''){
+                    //      error.css('display', 'block')
+                    //      this.fecha.css('borderColor',"red")
+                    // }
+                    // else if(duracion==''){
+                    //      error.css('display', 'block')
+                    //      this.duracion.css('borderColor',"red")
+                    // }
+                    // else if(!legales.prop('checked') ){
+                    //      legal.css('display', 'block')
+                    //      legales.css('borderColor',"red")
+                    // }
+                    // else{
+                    //      let pelicula= new Pelicula()
+                    //      pelicula.setNombre(nombre)
+                    //      pelicula.setDescripcion(descripcion)
+                    //      pelicula.setFecha(fecha)
+                    //      pelicula.setDuracion(duracion)
+                    //      pelicula.setVista(vista)
+                    //      pelicula.setGenero(opcion)
+                    //      pelicula.setPlataforma(this.plataformas)
+                    //      pelicula.setImagen(imagen)
+                         
+                    //      this.controlador.nuevaPelicula(pelicula)
+                    //      this.pulsarBorrar()
+                    //      insertado.css('display','block')
+                    // }
 
-          this.amazon=$('#amazon').checkboxradio()
-          this.amazon.click(this.anadirPlataforma.bind(this,'Amazon'))
+               },
 
-          this.proteccion=$('#legales').checkboxradio()
-          this.plataformas=new Set()
+               /**
+               * Método que se ejecuta al pulsar cualquier checkbox, eliminandolo del Set si existe o añadiendolo
+               */
+               anadirPlataforma(elemento){
+                    if(this.plataformas.has(elemento)){
+                         this.plataformas.delete(elemento)
+                    }
+                    else{
+                         this.plataformas.add(elemento)
+                    }
+                    console.log(this.plataformas)
+               }
+
+          }
+     })
+		
+          // this.div=$('#nueva')
+
+          // this.nombre=$('#nombre').autocomplete({
+          //      source: [ "Titanic", "Harry Potter", "Mamma Mia", "Shrek", "Friends", "The Walking Dead", "Dune", "Avatar", "Simpsons", "Avengers", "Spiderman" ]
+          // })
+          // this.descripcion=$('#descripcion')
+          // this.fecha=$('#fecha').datepicker( {
+          //      dateFormat: "dd/mm/yy",
+          //      changeYear: true,
+          //      changeMonth: true,
+          //      monthNamesShort: ['Enero','Febrero','Marzo','Abril','Mayo','Junio',
+          //      'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
+          //      prevText: "⃖",  //flecha izquierda
+          //      nextText: "⃗",  //flecha derecha
+          //      dayNamesMin: [ "Dom", "Lun", "Mar", "Mie", "Jue", "Vie", "Sab" ],
+          //      yearRange: "1895:2045"
+          // })
+          // this.duracion=$('#duracion')
+          // this.imagen=$('#imagen').tooltip()
+
+          
+
+          
+         
 	}
 
-     /**
-      * Método para cuando damos al boton borrar que limpia el formulario
-      */
-     pulsarBorrar() {
-          console.log('borrando')
-          this.nombre.val('')
-          this.descripcion.val('')
-          this.fecha.val('')
-          this.duracion.val('')
-          this.imagen.val('')
-          $('select').eq(0).val('Drama')
-  
-          this.netflix.prop("checked", false)
-          this.hbo.prop("checked", false)
-          this.disney.prop("checked", false)
-          this.amazon.prop("checked", false)
-          this.plataformas.clear()
-          let error=$('#camposrellenos')
-          error.css('display','none')
-          let legal=$('#legalNueva')
-          legal.css('display','none')
-          let insertado=$('#insertado')
-          insertado.css('display','none')
-          this.nombre.css('borderColor',"#808080")
-          this.descripcion.css('borderColor',"#808080")
-          this.fecha.css('borderColor',"#808080")
-          this.duracion.css('borderColor',"#808080")
-     }
-
-     /**
-      * Método para cuando damos al boton aceptar
-      */
-     pulsarAceptar() {
-          let error=$('#camposrellenos')
-          let legal=$('#legalNueva')
-          error.css('display','none')
-          let insertado=$('#insertado')
-          insertado.css('display','none')
-          this.nombre.css('borderColor',"#808080")
-          this.descripcion.css('borderColor',"#808080")
-          this.fecha.css('borderColor',"#808080")
-          this.duracion.css('borderColor',"#808080")
-
-          let nombre=this.nombre.val()
-
-          let descripcion=this.descripcion.val()
-          
-          let fecha=this.fecha.val()
-          
-          let duracion=this.duracion.val()
-
-          let imagen=this.imagen.val()
-
-          let legales=$('#legales')
-
-          let vista=null
-          if($('#vistaSi').is(':checked')){
-               vista=true
-          }
-          if($('#vistaNo').is(':checked')){
-               vista=false
-          }
-
-          let genero=$('#genero option:selected');
-          let opcion=genero.val()
-          
-          if(nombre==''){
-               error.css('display', 'block')
-               this.nombre.css('borderColor',"red")
-          }
-          else if(descripcion==''){
-               error.css('display', 'block')
-               this.descripcion.css('borderColor',"red")
-          }
-          else if(fecha==''){
-               error.css('display', 'block')
-               this.fecha.css('borderColor',"red")
-          }
-          else if(duracion==''){
-               error.css('display', 'block')
-               this.duracion.css('borderColor',"red")
-          }
-          else if(!legales.prop('checked') ){
-               legal.css('display', 'block')
-               legales.css('borderColor',"red")
-          }
-          else{
-               let pelicula= new Pelicula()
-               pelicula.setNombre(nombre)
-               pelicula.setDescripcion(descripcion)
-               pelicula.setFecha(fecha)
-               pelicula.setDuracion(duracion)
-               pelicula.setVista(vista)
-               pelicula.setGenero(opcion)
-               pelicula.setPlataforma(this.plataformas)
-               pelicula.setImagen(imagen)
-               
-               this.controlador.nuevaPelicula(pelicula)
-               this.pulsarBorrar()
-               insertado.css('display','block')
-          }
-
-     }
-
-     /**
-      * Método que se ejecuta al pulsar cualquier checkbox, eliminandolo del Set si existe o añadiendolo
-      */
-     anadirPlataforma(elemento){
-          if(this.plataformas.has(elemento)){
-               this.plataformas.delete(elemento)
-          }
-          else{
-               this.plataformas.add(elemento)
-          }
-          console.log(this.plataformas)
-     }
-
-}
+     

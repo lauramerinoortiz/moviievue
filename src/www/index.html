@@ -24,47 +24,7 @@
 
     <!-- DIV NUEVA PELICULA -->
     <div id="nueva">
-        <h1>Nueva película</h1>
-        <form>
-            <div class="caja"><label for="nombre">Nombre*</label>
-                <input type="text" id="nombre"><br>
-                <label for="descripcion">Descripción*</label>
-                <textarea id="descripcion"></textarea><br>
-                <label for="fecha">Fecha de estreno*</label>
-                <input type="text" id="fecha"><br>
-                <label for="duracion">Duración en minutos*</label>
-                <input type="number" id="duracion" min="0" pattern="\d*"><br>
-                <label for="vista">¿Vista?</label>
-                <label for="vistaSi"><input type="radio" id="vistaSi" name="vista" value="Si">Si</label>
-                <label for="vistaNo"><input type="radio" id="vistaNo" name="vista" value="No" checked>No</label>
 
-            </div>
-            <div class="caja"><label for="genero">Género</label>
-                <select id="genero">
-                    <option>Drama</option>
-                    <option>Romántica</option>
-                    <option>Comedia</option>
-                    <option>Misterio</option>
-                    <option>Terror</option>
-                    <option>Histórica</option>
-                    <option>Adolescente</option>
-                    <option>Otro</option>
-                </select><br>
-                <label>Plataforma disponible:</label>
-                <input type="checkbox" value="HBO" id="hbo"><label for="hbo">HBO</label>
-                <input type="checkbox" value="Netflix" id="netflix"><label for="netflix">Netflix</label>
-                <input type="checkbox" value="Disney" id="disney"><label for="disney">Disney+</label><br>
-                <input type="checkbox" value="Amazon" id="amazon"><label for="amazon">Amazon Prime</label><br>
-                <label for="imagen">URL de imagen <input type="text" id="imagen"  title="Copia la URL de internet de una foto de esta peli y pégala aqui."></label>
-            </div>
-            
-        </form>
-        <p id="camposrellenos">*Debe rellenar todos los campos con asterico</p>
-        <p id="insertado">Insertado correctamente</p>
-        <p id="legalNueva">*Recuerde aceptar las condiones legales</p>
-        <label for="legales" class="legales"><input type="checkbox" id="legales">Aceptas los términos legales y la ley de protección de datos sin reservas</label><br>
-        <button class="btnEliminar">Borrar</button>
-        <button class="btnModificar">Enviar</button>
     </div>
 
     <!-- DIV CON LOS DATOS DE LA PELICULA -->

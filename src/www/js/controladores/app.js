@@ -143,8 +143,7 @@ class Controlador {
 
 		this.vistaEliminar=new VistaEliminar(this).mount('#eliminar')
 
-		this.divnueva=$('#nueva')
-		this.vistaNueva=new VistaNueva(this.divnueva, this)
+		this.vistaNueva=new VistaNueva(this).mount('#nueva')
         
         this.divdatos=$('#datos')
 		this.vistaDatos=new VistaDatos(this.divdatos, this)
