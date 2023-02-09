@@ -60,9 +60,8 @@ export function VistaModificar (controlador) {
             </div>
         </form>
         <p id="camposrellenosEditar">*Debe rellenar todos los campos con asterico</p>
-        <p id="legalEditar">*Recurde aceptar las condiones legales</p>
-        <label for="legalesEditar" class="legales"><input type="checkbox" v-model="datos.legales" id="legalesEditar">*Aceptas los términos legales y la ley de protección de datos sin reservas</label><br>
-        <button class="btnEliminar" v-on:click="pulsarBorrar">Cancelar</button>
+        <p id="legalEditar">*Recuerde aceptar las condiones legales.</p>
+        <label for="legales" class="legales"><input type="checkbox" v-model="datos.legales" id="legales">Aceptas los <a href="moviielegal.html">términos legales y la ley de protección de datos</a> sin reservas</label><br>        <button class="btnEliminar" v-on:click="pulsarBorrar">Cancelar</button>
         <button class="btnModificar" v-on:click="pulsarAceptar">Enviar</button>
           </div>`,
           methods:{
@@ -140,7 +139,6 @@ export function VistaModificar (controlador) {
                 * @param {Object} pelicula 
                 */
                mostrarDatos(pelicula){
-                    console.log(pelicula)
                     this.datos.nombre=pelicula.nombre
                     this.datos.descripcion=pelicula.descripcion
                     this.datos.fecha=pelicula.fecha
@@ -149,8 +147,6 @@ export function VistaModificar (controlador) {
                     this.datos.genero=pelicula.genero
                     this.datos.plataformas=pelicula.plataforma
                     this.datos.imagen=pelicula.imagen
-
-                    console.log(this.datos)
                }
 
           }

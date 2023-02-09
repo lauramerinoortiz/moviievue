@@ -20,34 +20,10 @@ class Controlador {
 		$(document).ready(this.iniciar.bind(this))
 
 		this.cookies = () => {
-			//======================================================================
-			// COOKIES
-			//======================================================================
-	
-			//-----------------------------------------------------
-			// Configuración
-			//-----------------------------------------------------
-			//const urlsScriptsCookies = ['https://analytics.google.com', 'https://facebook.com'];
-	
-			//function contenidoScriptsCookies () {
-				////////////  ¿Google Analítics? /////////////
-				////////////  ¿Facebook Pixel? /////////////
-				////////////  ¿Admob? /////////////
-				////////////  etc  /////////////
-			//}
-	
-	
-			//-----------------------------------------------------
 			// Variables
-			//-----------------------------------------------------
 			const seccionCookie =$('section.cookies');
 			const cookieSi = $('.cookies__boton--si');
 			const cookieNo = $('.cookies__boton--no');
-			const nuevosScripts = $('#nuevosScripts');
-	
-			//-----------------------------------------------------
-			// Funciones
-			//-----------------------------------------------------
 	
 			/**
 			 * Método que oculta la sección de Cookie para siempre
@@ -78,22 +54,42 @@ class Controlador {
 				// Guarda que ha aceptado
 				localStorage.setItem('cookie', false);
 			}
-	
+			
+			/**
+			 * Método que según el nombre que reciba busca la cookie y saca su valor
+			 * @param {String} cname 
+			 * @returns valor de la cookie
+			 */
+			function getCookie(cname) {
+				let name = cname + "=";
+				let ca = document.cookie.split(';');
+				for(let i = 0; i < ca.length; i++) {
+				  let c = ca[i];
+				  while (c.charAt(0) == ' ') {
+					c = c.substring(1);
+				  }
+				  if (c.indexOf(name) == 0) {
+					return parseInt(c.substring(name.length, c.length));
+				  }
+				}
+				return "";
+			}
+
 			/**
 			 * Método que ejecuta tu código si aceptan las cookies
 			 */
 			function ejecutarSiAcepta() {
-				// Crea los <script>
-				// urlsScriptsCookies.forEach((url) => {
-				//     const nuevoScript = document.createElement('script');
-				//     nuevoScript.setAttribute('src', url);
-				//     nuevosScripts.appendChild(nuevoScript);
-				// });
-				// // Lanza los códigos
-				// contenidoScriptsCookies();
+
 				document.cookie= "AceptaCookies=Si"
-				let ultelement=$('body').children().last()
-				document.cookie="UltimoElemento="+ultelement
+				let ultelement=document.getElementsByTagName('div')
+				let id=ultelement[ultelement.length-1].id
+				document.cookie="UltimoElemento= "+id
+
+				let valor=getCookie('Veces')
+				if(typeof valor=='string'){
+					valor=0
+				}
+				document.cookie="Veces= "+(parseInt(valor)+1)
 			}
 	
 			/**
@@ -112,6 +108,7 @@ class Controlador {
 					}
 				}
 			}
+
 	
 			//-----------------------------------------------------
 			// Eventos
@@ -159,6 +156,7 @@ class Controlador {
 
 		// Activa el código de cookies
         this.cookies().iniciar();
+
 	}
 
 	/**

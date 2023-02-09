@@ -60,8 +60,8 @@ export function VistaNueva (controlador) {
           </form>
           <p id="camposrellenos">*Debe rellenar todos los campos con asterico</p>
           <p id="insertado">Insertado correctamente</p>
-          <p id="legalNueva">*Recuerde aceptar las condiones legales</p>
-          <label for="legales" class="legales"><input type="checkbox" v-model="datos.legales" id="legales">Aceptas los términos legales y la ley de protección de datos sin reservas</label><br>
+          <p id="legalNueva">*Recuerde aceptar las condiones legales.</p>
+          <label for="legales" class="legales"><input type="checkbox" v-model="datos.legales" id="legales">Aceptas los <a href="moviielegal.html">términos legales y la ley de protección de datos</a> sin reservas</label><br>
           <button class="btnEliminar" v-on:click="pulsarBorrar">Borrar</button>
           <button class="btnModificar" v-on:click="pulsarAceptar">Enviar</button>
           </div>`,
@@ -91,13 +91,19 @@ export function VistaNueva (controlador) {
                     this.datos.plataformas=[]
                     this.datos.imagen=''
                     this.datos.legales=''
+                    let error=$('#camposrellenos')
+                    error.css('display','none')
+                    
+                    let insertado=$('#insertado')
+                    insertado.css('display','none')
+                    let legal=$('#legalNueva')
+                    legal.css('display','none')
                },
 
                /**
                * Método para cuando damos al boton aceptar
                */
                pulsarAceptar() {
-                    console.log(this.datos)
                     let error=$('#camposrellenos')
                     error.css('display','none')
                     
@@ -133,7 +139,7 @@ export function VistaNueva (controlador) {
                          pelicula.setPlataforma(this.datos.plataformas)
                          pelicula.setImagen(this.datos.imagen)
                          this.controlador.nuevaPelicula(pelicula)
-                         //this.pulsarBorrar()
+                         this.pulsarBorrar()
                          insertado.css('display','block')
                     }
                }
