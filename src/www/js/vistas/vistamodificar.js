@@ -1,195 +1,158 @@
 "use strict" //activo modo estricto
 import { Pelicula } from './pelicula.js'
-import {Vista} from './vista.js'
 /**
- * Clase VistaModificar que muestra el formulario para una nueva pelicula
+ * Clase VistaNueva que muestra el formulario para una nueva pelicula
  * Gestiona los elementos y métodos de esta Vista
  */
-export class VistaModificar extends Vista {
-
-	/**
-     * Contructor de la clase VistaModificar
-     * @param {HTMLDivElement} div Div de la vista
-     * @param {Object} controlador Controlador de la vista
-     */
-	constructor(div, controlador) {
-		super(div)
-          this.controlador = controlador
-          this.div=$('#modificar')
-
-          this.nombre=$('#nombreEditar').autocomplete({
-               source: [ "Titanic", "Harry Potter", "Mamma Mia", "Shrek", "Friends", "The Walking Dead", "Dune", "Avatar", "Simpsons", "Avengers", "Spiderman" ],
-               
-          })
-          this.descripcion=$('#descripcionEditar')
-          this.fecha=$('#fechaEditar').datepicker( {
-               dateFormat: "dd/mm/yy",
-               changeMonth: true,
-               changeYear: true,
-               monthNamesShort: ['Enero','Febrero','Marzo','Abril','Mayo','Junio',
-               'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
-               prevText: "⃖",  //flecha izquierda
-               nextText: "⃗",  //flecha derecha
-               dayNamesMin: [ "Dom", "Lun", "Mar", "Mie", "Jue", "Vie", "Sab" ],
-               yearRange: "1895:2045"
-             })
-          this.duracion=$('#duracionEditar')
-          this.imagen=$('#imagenEditar')
-
-          this.netflix=$('#netflixEditar').checkboxradio()
-          this.netflix.click(this.anadirPlataforma.bind(this,'Netflix'))
-
-          this.hbo=$('#hboEditar').checkboxradio()
-          this.hbo.click(this.anadirPlataforma.bind(this, 'Hbo'))
-
-          this.disney=$('#disneyEditar').checkboxradio()
-          this.disney.click(this.anadirPlataforma.bind(this, 'Disney'))
-
-          this.amazon=$('#amazonEditar').checkboxradio()
-          this.amazon.click(this.anadirPlataforma.bind(this,'Amazon'))
-
-          this.cancelar=this.div.find('button').eq(0)
-          this.cancelar.click(this.pulsarCancelar.bind(this))
-
-          this.proteccion=$('#legalesEditar').checkboxradio()
-
-          this.plataformas=new Set()  //Set para guardar los datos introducidos
-	}
-
-     /**
-      * Método para cuando damos click a Cancelar
-      */
-     pulsarCancelar() {
-          this.controlador.pulsarCancelar()
-     }
-
-     /**
-      * Método para cuando damos click a Aceptar
-      */
-     pulsarAceptar(id) {
-          let error=$('#camposrellenosEditar')
-          let legal=$('#legalEditar')
-          let legalCheck=$('#legalesEditar')
-          console.log(id)
-          if(this.nombre.val()==undefined){
-               error.css('display','block')
-               this.nombre.css('borderColor',"red")
-          }
-          else if(this.descripcion.val()==undefined){
-               error.css('display','block')
-               this.descripcion.css('borderColor',"red")
-          }
-          else if(this.fecha.val()==undefined){
-               error.css('display','block')
-               this.fecha.css('borderColor',"red")
-          }
-          else if(this.duracion.val()==undefined){
-               error.css('display','block')
-               this.duracion.css('borderColor',"red")
-          }
-          else if(!legalCheck.prop('checked')){
-               legal.css('display','block')
-          }
-          else{
-               //Coger los datos del formulario
-               let peliculaNueva=new Pelicula()
-               peliculaNueva.setNombre(this.nombre.val())
-               peliculaNueva.setDescripcion(this.descripcion.val())
-               peliculaNueva.setFecha(this.fecha.val())
-               peliculaNueva.setDuracion(this.duracion.val())
-               peliculaNueva.setImagen(this.imagen.val())
-               peliculaNueva.setPlataforma(this.plataformas)
-
-               let vista=null
-               if($('#vistaSiEditar').is(':checked')){
-                    vista=true
+export function VistaModificar (controlador) {
+     return VistaModificar=Vue.createApp({
+          data(){
+               return{
+                    controlador:controlador,
+                    id:'',
+                    estado:'inactivo',
+                    datos:{
+                         nombre:'',
+                         descripcion:'',
+                         fecha:'',
+                         duracion:'',
+                         vista:'',
+                         genero:'',
+                         plataformas:[],
+                         imagen:'',
+                         legales:''
+                    }
                }
-               if($('#vistaNoEditar').is(':checked')){
-                    vista=false
+          },
+          template: `<div :class=estado>
+          <h1>Editar película</h1>
+        <form>
+            <div class="caja"><label for="nombreEditar">Nombre*</label>
+                <input type="text" value="Nombre de peli" v-model="datos.nombre" id="nombreEditar"><br>
+                <label for="descripcionEditar">Descripción*</label>
+                <textarea id="descripcionEditar" v-model="datos.descripcion">Descripción precisa de la película*</textarea><br>
+                <label for="fechaEditar" >Fecha de estreno*</label>
+                <input type="text" v-model="datos.fecha" type="date" id="fechaEditar"><br>
+                <label for="duracionEditar">Duración en minutos*</label>
+                <input type="number" v-model="datos.duracion" id="duracionEditar" pattern="\d*"><br>
+                <label for="vistaEditar">¿Vista?</label>
+                <label for="vistaSiEditar"><input type="radio" v-model="datos.vista" id="vistaSiEditar" name="vista" value="Si" >Si</label>
+                <label for="vistaNoEditar"><input type="radio" v-model="datos.vista" id="vistaNoEditar" name="vista" value="No" checked>No</label>
+
+            </div>
+            <div class="caja"><label for="generoEditar">Género</label>
+                <select id="generoEditar"  v-model="datos.genero">
+                    <option value="Drama">Drama</option>
+                    <option value="Romántica">Romántica</option>
+                    <option value="Comedia">Comedia</option>
+                    <option value="Misterio">Misterio</option>
+                    <option value="Terror">Terror</option>
+                    <option value="Histórica">Histórica</option>
+                    <option value="Adolescente">Adolescente</option>
+                    <option value="Otro">Otro</option>
+                </select><br>
+                <label for="checkbok">Plataforma disponible:</label>
+                <label for="hboEditar"><input type="checkbox" v-model="datos.plataformas" value="Hbo" id="hboEditar" checked>HBO</label>
+                <label for="netflixEditar"><input type="checkbox" v-model="datos.plataformas" value="Netflix"  id="netflixEditar">Netflix</label>
+                <label for="disneyEditar"><input type="checkbox" v-model="datos.plataformas" value="Disney" id="disneyEditar">Disney+</label><br>
+                <label for="amazonEditar"><input type="checkbox" v-model="datos.plataformas" value="Amazon" id="amazonEditar">Amazon Prime</label><br>
+                <label for="imagen">URL de imagen <input type="text" v-model="datos.imagen" id="imagenEditar" title="Copia la URL de internet de una foto de esta peli y pégala aqui."></label>
+            </div>
+        </form>
+        <p id="camposrellenosEditar">*Debe rellenar todos los campos con asterico</p>
+        <p id="legalEditar">*Recurde aceptar las condiones legales</p>
+        <label for="legalesEditar" class="legales"><input type="checkbox" v-model="datos.legales" id="legalesEditar">*Aceptas los términos legales y la ley de protección de datos sin reservas</label><br>
+        <button class="btnEliminar" v-on:click="pulsarBorrar">Cancelar</button>
+        <button class="btnModificar" v-on:click="pulsarAceptar">Enviar</button>
+          </div>`,
+          methods:{
+               /**
+               * Método que muestra u oculta la vista
+               * @param {Boolean} estado 
+               */
+               mostrar(estado){
+                    if(estado){
+                         this.estado='activo'
+                    }
+                    else{
+                         this.estado='inactivo'
+                    }
+               },
+               /**
+                * Método para cuando damos al boton borrar que limpia el formulario
+                */
+               pulsarBorrar() {
+                    this.datos.nombre=''
+                    this.datos.descripcion=''
+                    this.datos.fecha=''
+                    this.datos.duracion=''
+                    this.datos.vista='No'
+                    this.datos.genero=''
+                    this.datos.plataformas=[]
+                    this.datos.imagen=''
+                    this.datos.legales=''
+               },
+
+               /**
+               * Método para cuando damos al boton aceptar
+               */
+               pulsarAceptar() {
+                    console.log(this.datos)
+                    let error=$('#camposrellenosEditar')
+                    error.css('display','none')
+                    
+                    let legal=$('#legalEditar')
+                    legal.css('display','none')
+
+                    
+                    if(this.datos.nombre==''){
+                         error.css('display', 'block')
+                    }
+                    else if(this.datos.descripcion==''){
+                         error.css('display', 'block')
+                    }
+                    else if(this.datos.fecha==''){
+                         error.css('display', 'block')
+                    }
+                    else if(this.datos.duracion==''){
+                         error.css('display', 'block')
+                    }
+                    else if(this.datos.legales=='' ){
+                         legal.css('display', 'block')
+                    }
+                    else{   
+                         let pelicula= new Pelicula()
+                         pelicula.setNombre(this.datos.nombre)
+                         pelicula.setDescripcion(this.datos.descripcion)
+                         pelicula.setFecha(this.datos.fecha)
+                         pelicula.setDuracion(this.datos.duracion)
+                         pelicula.setVista(this.datos.vista)
+                         pelicula.setGenero(this.datos.genero)
+                         pelicula.setPlataforma(this.datos.plataformas)
+                         pelicula.setImagen(this.datos.imagen)
+                         this.controlador.modificarPelicula(this.id,pelicula)
+                         this.pulsarBorrar()
+                    }
+
+               },
+               /**
+                * Método que introduce los datos de la pelicula en el objeto datos de Vue, y a su vez en el formulario
+                * @param {Object} pelicula 
+                */
+               mostrarDatos(pelicula){
+                    console.log(pelicula)
+                    this.datos.nombre=pelicula.nombre
+                    this.datos.descripcion=pelicula.descripcion
+                    this.datos.fecha=pelicula.fecha
+                    this.datos.duracion=pelicula.duracion
+                    this.datos.vista=pelicula.vista
+                    this.datos.genero=pelicula.genero
+                    this.datos.plataformas=pelicula.plataforma
+                    this.datos.imagen=pelicula.imagen
+
+                    console.log(this.datos)
                }
 
-               let genero=$('#generoEditar option:selected');
-               let opcion=genero.val()
-               peliculaNueva.setVista(vista)
-               peliculaNueva.setGenero(opcion)
-
-               this.controlador.modificarPelicula(id, peliculaNueva)
           }
-     }
-
-     /**
-      * Método para cuando damos al boton borrar que limpia el formulario
-      */
-     pulsarBorrar() {
-          this.nombre.val('')
-          this.descripcion.val('')
-          this.fecha.val('')
-          this.duracion.val('')
-          this.imagen.val('')
-          $('select').eq(0).val('Drama')
-     
-          
-          this.netflix.prop("checked", false)
-          this.hbo.prop("checked", false)
-          this.disney.prop("checked", false)
-          this.amazon.prop("checked", false)
-          this.plataformas.clear()
-          let error=$('#camposrellenosEditar')
-          error.css('display','none')
-          let legal=$('#legalEditar')
-          legal.css('display','none')
-          this.nombre.css('borderColor',"#808080")
-          this.descripcion.css('borderColor',"#808080")
-          this.fecha.css('borderColor',"#808080")
-          this.duracion.css('borderColor',"#808080")
-     }
-
-     /**
-      * Método que muestra los datos de la pelicula introducidos en el formulario
-      * @param {Oject} pelicula 
-      */
-     mostrarDatos(pelicula){
-          this.pulsarBorrar()
-          console.log(pelicula.nombre)
-          this.nombre.val(pelicula.nombre)
-          this.descripcion.val(pelicula.descripcion)
-          this.fecha.val(pelicula.fecha)
-          this.duracion.val(pelicula.duracion)
-          this.imagen.val(pelicula.imagen)
-          for(let item of pelicula.plataforma){
-               this.plataformas.add(item)
-          }
-          $('#generoEditar').val(pelicula.genero)
-          if(this.plataformas.has('Netflix')){
-               this.netflix.prop("checked", true)
-          }
-          if(this.plataformas.has('Hbo')){
-               this.hbo.prop("checked", true)
-          }
-          if(this.plataformas.has('Amazon')){
-               this.amazon.prop("checked", true)
-          }
-          if(this.plataformas.has('Disney')){
-               this.disney.prop("checked", true)
-          }
-
-          this.aceptar=this.div.find('button').eq(1)
-          console.log(this.aceptar)
-          this.aceptar.click(this.pulsarAceptar.bind(this, pelicula.id))
-          
-     }
-
-     
-     /**
-      * Método que se ejecuta al pulsar cualquier checkbox, eliminandolo del Set si existe o añadiendolo
-      */
-      anadirPlataforma(elemento){
-          if(this.plataformas.has(elemento)){
-               this.plataformas.delete(elemento)
-          }
-          else{
-               this.plataformas.add(elemento)
-          }
-
-     }
+     })
 }

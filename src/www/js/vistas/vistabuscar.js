@@ -62,10 +62,10 @@ export function VistaBuscar (controlador) {
                pulsarAceptar() {
                     let vista
                     if($('#vistaSiBuscar').is(':checked')){
-                         vista=true
+                         vista='Si'
                     }
                     if($('#vistaNoBuscar').is(':checked')){
-                         vista=false
+                         vista='No'
                     }
 
                     let genero=$('#generoBuscar option:selected');

@@ -138,20 +138,19 @@ class Controlador {
 		this.vistaNav=new VistaNav(this).mount('#header')
 
 		this.vistaListado=new VistaListado(this).mount('#inicio')
+		
 
 		this.vistaBuscar=new VistaBuscar(this).mount('#buscar')
 
 		this.vistaEliminar=new VistaEliminar(this).mount('#eliminar')
 
 		this.vistaNueva=new VistaNueva(this).mount('#nueva')
-        
+    
         this.divdatos=$('#datos')
 		this.vistaDatos=new VistaDatos(this.divdatos, this)
 
-        
 
-        this.divModificar=$('#modificar')
-        this.vistaModificar=new VistaModificar(this.divModificar, this)
+        this.vistaModificar=new VistaModificar(this).mount('#modificar')
 
 		
 		
@@ -214,6 +213,7 @@ class Controlador {
 	mostrarDatos(pelicula){
 		this.ocultarVistas()
 		this.vistaDatos.mostrar(true)
+		this.vistaModificar.id=pelicula.id
 		this.vistaModificar.mostrarDatos(pelicula)
 		this.vistaDatos.mostrarDatos(pelicula)
 	}

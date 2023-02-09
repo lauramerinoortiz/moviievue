@@ -54,7 +54,7 @@ export class VistaDatos extends Vista {
           }
           plataformas.append(plat)
           genero.append(pelicula.genero)
-          if(pelicula.vista){
+          if(pelicula.vista=='Si'){
                vista.append('Si')
           }
           else{
